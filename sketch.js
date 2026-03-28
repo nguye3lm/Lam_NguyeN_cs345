@@ -3,7 +3,18 @@ let gold = 0; //default 0 for now
 let enemies = [];
 let towers = [];
 let waveTimer = 0;
-let waveCounter = 0;
+let waveCounter = 0;  
+let logo;
+let tower1Asset;
+//for upgrading tower
+let selectedTower = null;
+//for placing tower
+let selectedBuyButton = null;
+let draggingTowerType = null;
+//allows for more tower buttons
+let towerButtons = [
+  { type: 1, x: 1375, y: 150, w: 100, h: 100 },
+];
 
 function createPath() {
   path.push(createVector(-10, 200));
@@ -36,18 +47,68 @@ function placeTower(x, y, attackRange = 100, cooldown = 30, damage = 1) {
   return true;
 }
 
+function mousePressed() {
+  // check if clicking a tower button
+  for (let button of towerButtons) {
+    if (
+      mouseX >= button.x &&
+      mouseX <= button.x + button.w &&
+      mouseY >= button.y &&
+      mouseY <= button.y + button.h
+    ) {
+      if (selectedBuyButton === button.type) {
+        draggingTowerType = button.type; //second click starts dragging
+      } else {
+        selectedBuyButton = button.type; //first click selects the button 
+        draggingTowerType = null;
+      }
+      return
+    }
+  } 
+
+  //places tower if dragging
+  if (draggingTowerType !== null) {
+    if (draggingTowerType === 1){ //will need to add more when adding more towers
+      placeTower(mouseX, mouseY, 100, 30, 1);
+    }
+    draggingTowerType = null;
+    selectedBuyButton = null;
+    return;
+  }
+
+
+  //selects already placed tower
+  selectedTower = null; //unselects tower when clicking off of it
+  
+  //selects a tower
+  for (let tower of towers) {
+    if (dist(mouseX, mouseY, tower.x, tower.y) < 10) { //will have to change "<10" with size of towers
+      selectedTower = tower;
+      break;
+    }
+  }
+}
+
+function preload() {
+  //test logo
+  logo = loadImage("dev/assets/Castle rush placeholder logo.png");
+  tower1Asset = loadImage("dev/assets/Castle Rush tower 1 placeholder.png")
+}
+
 function setup() {
-  createCanvas(1920, 1080);
+  createCanvas(1535, 825);
   createPath();
   
   // Place initial test towers
   placeTower(150, 100, 120, 30, 1);
   placeTower(350, 150, 100, 25, 1);
   placeTower(450, 350, 110, 35, 1);
+
 }
 
 function draw() {
   background(220);
+
 
   // Draw path visualization
   noFill();
@@ -102,4 +163,36 @@ function draw() {
   text('Gold: ' + gold, 10, 30);
   text('Enemies: ' + enemies.length, 10, 60);
   text('Towers: ' + towers.length, 10, 90);
+  //canvas size = 1535, 825
+  fill('#7c7c7c'); 
+  rect(1300, 0, 300, 825);
+  image(logo, 1300, 0, 240, 100);
+  image(tower1Asset, 1375, 150, 100, 100);
+
+
+  //draw tower UI when selecting a tower
+  if (selectedTower !== null) {
+    fill(255);
+    stroke(0);
+    rect(1025, 250, 270, 300, 10);
+
+    fill(0);
+    noStroke();
+    textSize(18);
+    text("Tower Info", 1035, 330);
+    text("Damage: " + selectedTower.damage, 1035, 360);
+    text("Range: " + selectedTower.attackRange, 1035, 390);
+  }
+
+  //placing new tower 
+  if (draggingTowerType !== null) {
+    fill(0, 150);
+    noStroke();
+    circle(mouseX, mouseY, 20);
+  }
+  
+
+
 }
+
+

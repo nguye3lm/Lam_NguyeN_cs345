@@ -6,6 +6,9 @@ let waveTimer = 0;
 let waveCounter = 0;  
 let logo;
 let tower1Asset;
+//castle health
+let castleAsset;
+let castleHealth = 10;
 //for upgrading tower
 let selectedTower = null;
 //for placing tower
@@ -91,6 +94,7 @@ function mousePressed() {
 
 function preload() {
   //test logo
+  castleAsset = loadImage("dev/assets/Castle.png");
   logo = loadImage("dev/assets/Castle rush placeholder logo.png");
   tower1Asset = loadImage("dev/assets/Castle Rush tower 1 placeholder.png")
 }
@@ -100,10 +104,11 @@ function setup() {
   createPath();
   
   // Place initial test towers
+  /*
   placeTower(150, 100, 120, 30, 1);
   placeTower(350, 150, 100, 25, 1);
   placeTower(450, 350, 110, 35, 1);
-
+  */
 }
 
 function draw() {
@@ -137,9 +142,11 @@ function draw() {
     enemy.updatePos();
     
     // Remove if dead or past end of path
-    if (enemy.health <= 0 || enemy.targetPos > path.length) {
+    if (enemy.health <= 0 || enemy.targetPos >= path.length) {
       if (enemy.health <= 0) {
         addGold(1); // Reward for killing enemy
+      } else {
+        castleHealth--; // Enemy reached the castle, the castle is losing health
       }
       enemies.splice(i, 1);
       continue;
@@ -160,9 +167,10 @@ function draw() {
   textSize(22);
   stroke(0);
   strokeWeight(3);
-  text('Gold: ' + gold, 10, 30);
-  text('Enemies: ' + enemies.length, 10, 60);
-  text('Towers: ' + towers.length, 10, 90);
+  text('Gold: ' + gold, 1100, 30);
+  text('Enemies: ' + enemies.length, 1100, 60);
+  text('Towers: ' + towers.length, 1100, 90);
+  text('Castle HP: ' + castleHealth, 1100, 120); // Castle health in top left (add after gold/enemies/towers text)
   //canvas size = 1535, 825
   fill('#7c7c7c'); 
   rect(1300, 0, 300, 825);
@@ -191,6 +199,13 @@ function draw() {
     circle(mouseX, mouseY, 20);
   }
   
+  // Draw castle at end of path (500, 300)
+  fill('#8B4513');
+  stroke(0);
+  strokeWeight(2);
+  rect(480, 280, 40, 40); // centered around (500, 300)
+  image(castleAsset, 480, 280, 40, 40);
+
 
 
 }

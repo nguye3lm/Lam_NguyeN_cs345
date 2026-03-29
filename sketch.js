@@ -20,13 +20,15 @@ let towerButtons = [
 ];
 
 function createPath() {
-  path.push(createVector(-10, 200));
-  path.push(createVector(50, 200));
-  path.push(createVector(200, 200));
-  path.push(createVector(205, 100));
-  path.push(createVector(400, 100));
-  path.push(createVector(400, 300));
-  path.push(createVector(500, 300));
+  path.push(createVector(-10, 100));
+  path.push(createVector(300, 100));
+  path.push(createVector(300, 600));
+  path.push(createVector(700, 600));
+  path.push(createVector(900, 350));
+  path.push(createVector(1050, 350));
+  path.push(createVector(1050, 700));
+  path.push(createVector(1250, 700));
+  
 }
 
 function addGold(amount) {
@@ -203,8 +205,9 @@ function draw() {
   fill('#8B4513');
   stroke(0);
   strokeWeight(2);
-  rect(480, 280, 40, 40); // centered around (500, 300)
-  image(castleAsset, 480, 280, 40, 40);
+  rect(1250, 680, 40, 40); // centered around (500, 300)
+  image(castleAsset, 1250, 680, 40, 40); 
+
 
 
 

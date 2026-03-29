@@ -30,6 +30,25 @@ class Enemy {
   render() {
     fill(255, 0, 0);
     ellipse(this.pos.x, this.pos.y, 40);
+
+    // Enemy health bar
+    let squareSize = 7;
+    let gap = 2;
+    let totalWidth = 4 * squareSize + 3 * gap;
+    let healthX = this.pos.x - totalWidth / 2;
+    let healthY = this.pos.y - 30;
+
+    for (let i = 0; i < 4; i++) {
+      let x = healthX + i * (squareSize + gap);
+      if (i < this.health) {
+        fill(0, 255, 0); // green = alive
+      }else {
+        fill(80);        // dark gray = lost
+      }
+      stroke(0);
+      strokeWeight(1);
+      rect(x, healthY, squareSize, squareSize);
+    }
   }
 }
 

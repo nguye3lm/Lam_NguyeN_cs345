@@ -35,7 +35,7 @@ function addGold(amount) {
   gold += amount;
 }
 
-function spawnEnemy(health = 2, damage = 1, speed = 2) {
+function spawnEnemy(health = 4, damage = 1, speed = 2) {
   enemies.push(new Enemy(health, damage, speed, path));
 }
 
@@ -131,7 +131,7 @@ function draw() {
   // Spawn waves of enemies periodically
   waveTimer++;
   if (waveTimer > 60) { // Spawn new wave every 60 frames
-    spawnEnemy(2, 1, 1.5);
+    spawnEnemy(4, 1, 1.5);
     waveTimer = 0;
     waveCounter++;
   }

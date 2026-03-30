@@ -96,9 +96,9 @@ function mousePressed() {
 
 function preload() {
   //test logo
-  castleAsset = loadImage("dev/assets/Castle.png");
-  logo = loadImage("dev/assets/Castle rush placeholder logo.png");
-  tower1Asset = loadImage("dev/assets/Castle Rush tower 1 placeholder.png")
+  castleAsset = loadImage("assets/Castle.png");
+  logo = loadImage("assets/Castle rush placeholder logo.png");
+  tower1Asset = loadImage("assets/Castle Rush tower 1 placeholder.png")
 }
 
 function setup() {
@@ -201,11 +201,11 @@ function draw() {
     circle(mouseX, mouseY, 20);
   }
   
-  // Draw castle at end of path (500, 300)
+  // Draw castle at end of path (1250, 680)
   fill('#8B4513');
   stroke(0);
   strokeWeight(2);
-  rect(1250, 680, 40, 40); // centered around (500, 300)
+  rect(1250, 680, 40, 40); // centered around (1250, 680)
   image(castleAsset, 1250, 680, 40, 40); 
 
 

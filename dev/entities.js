@@ -53,6 +53,51 @@ class Enemy {
 }
 
 
+class OrbProjectile {
+  constructor(x, y, targetEnemy, damage, speed = 6) {
+    this.pos = createVector(x, y);
+    this.targetEnemy = targetEnemy;
+    this.damage = damage;
+    this.speed = speed;
+    this.radius = 6;
+    this.active = true;
+  }
+
+  update() {
+    if (!this.active || !this.targetEnemy) return;
+
+    // Stop tracking if target is already gone.
+    if (this.targetEnemy.health <= 0) {
+      this.active = false;
+      return;
+    }
+
+    const targetPos = this.targetEnemy.pos;
+    const toTarget = p5.Vector.sub(targetPos, this.pos);
+    const distanceToTarget = toTarget.mag();
+
+    // Apply damage once orb reaches enemy.
+    if (distanceToTarget <= this.speed + this.radius + 20) {
+      this.targetEnemy.health -= this.damage;
+      this.active = false;
+      return;
+    }
+
+    toTarget.setMag(this.speed);
+    this.pos.add(toTarget);
+  }
+
+  render() {
+    if (!this.active) return;
+
+    stroke(0);
+    strokeWeight(2);
+    fill(255, 255, 120);
+    circle(this.pos.x, this.pos.y, this.radius * 2);
+  }
+}
+
+
 // Tower class with targeting and attack logic
 class Tower {
   constructor(x, y, attackRange = 100, cooldown = 30, damage = 1) {
@@ -67,6 +112,7 @@ class Tower {
     this.currentCooldown = 0;
     
     this.targetEnemy = null;
+    this.projectiles = [];
   }
 
   // Find the closest enemy in range (first in sorted array within range)
@@ -103,11 +149,20 @@ class Tower {
       this.attack(this.targetEnemy);
       this.currentCooldown = this.maxCooldown;
     }
+
+    // Update projectiles and remove inactive ones.
+    for (let i = this.projectiles.length - 1; i >= 0; i--) {
+      const projectile = this.projectiles[i];
+      projectile.update();
+      if (!projectile.active) {
+        this.projectiles.splice(i, 1);
+      }
+    }
   }
 
-  // Deal damage to target enemy
+  // Launch an orb toward target enemy.
   attack(enemy) {
-    enemy.health -= this.damage;
+    this.projectiles.push(new OrbProjectile(this.x, this.y, enemy, this.damage));
   }
 
   // Render tower as a circle with range indicator
@@ -124,11 +179,9 @@ class Tower {
     strokeWeight(2);
     circle(this.x, this.y, 20);
     
-    // Draw indicator line to target if exists
-    if (this.targetEnemy) {
-      stroke(255, 100, 100);
-      strokeWeight(2);
-      line(this.x, this.y, this.targetEnemy.pos.x, this.targetEnemy.pos.y);
+    // Draw active orb projectiles.
+    for (let projectile of this.projectiles) {
+      projectile.render();
     }
   }
 }

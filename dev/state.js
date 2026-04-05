@@ -1,0 +1,29 @@
+window.Game = {
+  path: [],
+  gold: 5,
+  enemies: [],
+  towers: [],
+  castleHealth: 10,
+  selectedTower: null,
+  selectedBuyButton: null,
+  draggingTowerType: null,
+  startLevel: false,
+  autoStartLevel: false,
+  assets: {
+    logo: null,
+    tower1: null,
+    castle: null,
+    trash: null,
+  },
+  ui: {
+    towerButtons: [
+      { type: 1, x: 1375, y: 150, w: 100, h: 100 },
+    ],
+    trashButton: { x: 1375, y: 600, w: 100, h: 100 },
+    startRoundButton: { x: 1320, y: 740, w: 170, h: 34 },
+    modeToggleButton: { x: 1320, y: 782, w: 170, h: 34 },
+    autoStartButton: null,
+    startLevelButton: null,
+  },
+  level: null,
+};

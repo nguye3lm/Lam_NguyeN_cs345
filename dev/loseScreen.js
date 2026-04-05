@@ -4,9 +4,9 @@ function drawLoseScreen() {
   background(0);
   fill(255);
   textSize(70);
-  text("YOU LOSE!", 500, 100);
+  text("YOU LOSE!", 560, 100);
   textSize(30);
-  text("PRESS R TO RESTART", 500, 400);
+  text("PRESS R TO RESTART", 560, 400);
 }
 
 function keyPressed() {

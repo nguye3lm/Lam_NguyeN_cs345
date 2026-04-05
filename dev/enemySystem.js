@@ -8,7 +8,7 @@ function updateAndRenderEnemies() {
       if (enemy.health <= 0) {
         addGold(1);
       } else {
-        Game.castleHealth--;
+        Game.castleHealth -= 2;
       }
       Game.enemies.splice(i, 1);
       continue;

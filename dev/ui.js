@@ -59,6 +59,27 @@ function renderTowerButtons() {
       strokeWeight(4);
       rect(button.x, button.y, button.w, button.h);
     }
+
+    // Hover tooltip
+    if (mouseX >= button.x && mouseX <= button.x + button.w &&
+        mouseY >= button.y && mouseY <= button.y + button.h) {
+      
+      // Tooltip box
+      fill(30, 30, 30, 220);
+      stroke(255, 200, 0);
+      strokeWeight(2);
+      rect(button.x - 160, button.y, 150, 100, 8);
+
+      // Tooltip text
+      fill(255);
+      noStroke();
+      textSize(14);
+      textAlign(LEFT, BASELINE);
+      text('Tower 1',         button.x - 150, button.y + 22);
+      text('Cost:   3 gold',  button.x - 150, button.y + 44);
+      text('Damage: 30',      button.x - 150, button.y + 66);
+      text('Range:  100',     button.x - 150, button.y + 88);
+    }
   }
 }
 
@@ -68,6 +89,7 @@ function renderSelectedTowerPanel() {
   fill(255);
   stroke(0);
   rect(1025, 250, 270, 300, 10);
+
 
   fill(0);
   noStroke();

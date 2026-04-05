@@ -20,6 +20,11 @@ function setup() {
 }
 
 function draw() {
+  if (gameLost) {
+    drawLoseScreen();
+    return;
+  }
+
   if (gameStart == false) {
     menuDraw();
     startButton();
@@ -49,5 +54,9 @@ function draw() {
     renderSelectedTowerPanel();
     renderDraggingTowerPreview();
     renderCastle();
+
+    if (Game.castleHealth <= 0) {
+      gameLost = true;
+    }
   }
 }

@@ -1,0 +1,6 @@
+Go into this path /Users/lamnguyen/Documents/Lam_NguyeN_cs345/dev and read all the files for me. 
+I want to create a lose screen as the images. But I don't know which files should I put the code
+Here is the requirements:
+- Create a new file js if have not created and named it loseScreen.js. Put all the code about Lose Screen to that file. Remove all the code about Lose Screen from others file. 
+- After the castleHealth at 0, the lose screen pop up and says "you lose!". (as the image I've given)
+- Press R to restart, then go back to level 1 game.

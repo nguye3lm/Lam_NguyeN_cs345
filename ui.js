@@ -47,6 +47,14 @@ function renderRoundControls() {
   text(Game.autoStartLevel ? 'Switch to Manual' : 'Switch to Auto', mode.x + mode.w / 2, mode.y + mode.h / 2);
 
   textAlign(LEFT, BASELINE);
+
+  // Setting icon button (square, next to Start Round & Switch to Auto)
+  const icon = Game.ui.settingIconButton;
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  rect(icon.x, icon.y, icon.w, icon.h, 6);
+  image(Game.assets.settingIcon, icon.x, icon.y, icon.w, icon.h);
 }
 
 function renderTowerButtons() {

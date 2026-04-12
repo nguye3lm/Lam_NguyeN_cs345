@@ -7,16 +7,12 @@ function preload() {
   Game.assets.tower1 = loadImage('assets/Castle Rush tower 1 placeholder.png');
   Game.assets.trash = loadImage('assets/trash-export.png');
   Game.assets.startbutton = loadImage('assets/CastleRush Start Placeholder.png');
+  Game.assets.settingbutton = loadImage('assets/CastleRush Settings Placeholder.png');
+  Game.assets.settingIcon = loadImage('assets/Setting_Icon.png');
 }
 
 function setup() {
   createCanvas(1535, 825);
-  // if (gameStart == true) {
-  //   createPath(Game.path);
-  //   Game.level = new Levels(Game.path);
-  //   setupRoundButtons();
-  // }
-    
 }
 
 function draw() {
@@ -28,10 +24,13 @@ function draw() {
   if (gameStart == false) {
     menuDraw();
     startButton();
+    settingButton();
+    drawSettingsMenu();
+    return;
   }
-  
+
   if (gameStart == true) {
-    
+
     if (!gameInitialized) {
       createPath(Game.path);
       Game.level = new Levels(Game.path);
@@ -54,6 +53,7 @@ function draw() {
     renderSelectedTowerPanel();
     renderDraggingTowerPreview();
     renderCastle();
+    drawSettingsMenu();
 
     if (Game.castleHealth <= 0) {
       gameLost = true;

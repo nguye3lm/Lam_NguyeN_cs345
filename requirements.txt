@@ -1,10 +1,12 @@
 Go into this path /Users/lamnguyen/Documents/Lam_NguyeN_cs345
 Read all the files and folder
+Check off after you done the requirements.
 Here is the requirements:
 1. Create a setting button at start menu (the same as start button but below it). ✅
 2. Create a pop up menu as a rect shape (black stroke and white fill). Make it simple. ✅
 3. Create close button to close the menu(not reload the page or exit the webiste). Put in the middle at the bottom of menu setting. Make it simple. ✅
-4. I just added Setting_Icon.pgn in assests folder. (In the game)
-    - Create a square shape with an setting Icon.
-    - Add the button with Icon setting image next to Start Round and Swtich to Auto.
+4. I just added Setting_Icon.pgn in assests folder. (In the game) ✅
+    - Create a square shape with an setting Icon. ✅
+    - Add the button with Icon setting image next to Start Round and Swtich to Auto. ✅
     - Click to the Icon and pop up setting menu. ✅
+5. When I opened the setting menu, I want to see the enemy stop and tower stop shooting 

@@ -11,7 +11,9 @@ function placeTower(x, y, attackRange = 100, cooldown = 30, damage = 1) {
 
 function updateAndRenderTowers() {
   for (let tower of Game.towers) {
-    tower.update(Game.enemies);
+    if (!settingsOpen) {
+      tower.update(Game.enemies);
+    }
     tower.render();
   }
 }

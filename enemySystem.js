@@ -5,7 +5,7 @@ function updateAndRenderEnemies() {
     if (!settingsOpen) {
       enemy.updatePos();
     }
-    
+
     if (enemy.health <= 0 || enemy.targetPos >= Game.path.length) {
       if (enemy.health <= 0) {
         addGold(1);

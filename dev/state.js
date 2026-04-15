@@ -11,13 +11,14 @@ window.Game = {
   autoStartLevel: false,
   assets: {
     logo: null,
-    tower1: null,
+    archerTower: null,
     castle: null,
     trash: null,
   },
   ui: {
     towerButtons: [
       { type: 1, x: 1375, y: 150, w: 100, h: 100 },
+      { type: 2, x: 1375, y: 270, w: 100, h: 100 },
     ],
     trashButton: { x: 1375, y: 600, w: 100, h: 100 },
     startRoundButton: { x: 1320, y: 740, w: 170, h: 34 },

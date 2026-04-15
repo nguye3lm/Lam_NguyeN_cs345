@@ -2,6 +2,11 @@ function isInsideButton(x, y, button) {
   return x >= button.x && x <= button.x + button.w && y >= button.y && y <= button.y + button.h;
 }
 
+const towerConfigs = {
+  1: { cost: 3, range: 100, cooldown: 30, damage: 1 },
+  2: { cost: 5, range: 120, cooldown: 55, damage: 1, splashRadius: 60 },
+};
+
 function onToggleAutoStart() {
   Game.autoStartLevel = !Game.autoStartLevel;
   if (!Game.autoStartLevel) {
@@ -51,9 +56,23 @@ function mousePressed() {
       return;
     }
 
-    if (Game.draggingTowerType === 1 && Game.gold >= 3 && !isOnPath(mouseX, mouseY, Game.path) && !isOnSidebar(mouseX, mouseY)) {
-      placeTower(mouseX, mouseY, 100, 30, 1);
-      addGold(-3); // subtract for cost of tower if player has enough
+    const config = towerConfigs[Game.draggingTowerType];
+    const validSpot = !isOnPath(mouseX, mouseY, Game.path) && !isOnSidebar(mouseX, mouseY);
+
+    if (config && Game.gold >= config.cost && validSpot) {
+      let placed = false;
+
+      if (Game.draggingTowerType === 1) {
+          placed = placeTower(mouseX, mouseY, ArcherTower, config.range, config.cooldown, config.damage);
+      }
+
+      if (Game.draggingTowerType === 2) {
+        placed = placeWizardTower(mouseX, mouseY, config.range, config.cooldown, config.damage, config.splashRadius);
+      }
+
+      if (placed) {
+        addGold(-config.cost);
+      }
     }
 
     Game.draggingTowerType = null;

@@ -3,16 +3,23 @@ let gameInitialized = false;
 
 function preload() {
   Game.assets.castle = loadImage('assets/Castle.png');
-  Game.assets.logo = loadImage('assets/Castle rush placeholder logo.png');
-  Game.assets.tower1 = loadImage('assets/Castle Rush tower 1 placeholder.png');
+  Game.assets.logo = loadImage('assets/high-resolution-color-logo.png');
+  Game.assets.archerTower = loadImage('assets/Castle Rush tower 1 placeholder.png');
   Game.assets.trash = loadImage('assets/trash-export.png');
   Game.assets.startbutton = loadImage('assets/CastleRush Start Placeholder.png');
   Game.assets.settingbutton = loadImage('assets/CastleRush Settings Placeholder.png');
-  Game.assets.settingIcon = loadImage('assets/Setting_Icon.png');
+  Game.assets.settingIcon   = loadImage('assets/Setting_Icon.png');
+  Game.assets.twoxicon   = loadImage('assets/2x.png');
 }
 
 function setup() {
   createCanvas(1535, 825);
+  // if (gameStart == true) {
+  //   createPath(Game.path);
+  //   Game.level = new Levels(Game.path);
+  //   setupRoundButtons();
+  // }
+    
 }
 
 function draw() {
@@ -28,9 +35,9 @@ function draw() {
     drawSettingsMenu();
     return;
   }
-
+  
   if (gameStart == true) {
-
+    
     if (!gameInitialized) {
       createPath(Game.path);
       Game.level = new Levels(Game.path);
@@ -54,6 +61,8 @@ function draw() {
     renderDraggingTowerPreview();
     renderCastle();
     drawSettingsMenu();
+    renderSettingIconButton()
+	renderSpeedUpButton() 
 
     if (Game.castleHealth <= 0) {
       gameLost = true;

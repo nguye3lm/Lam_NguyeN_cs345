@@ -1,6 +1,6 @@
 function menuDraw() {
     background(220);
-    image(Game.assets.logo, 600, 150, 350, 150);
+    image(Game.assets.logo, 567, 120, 400, 300);
 }
 
 function startButton() {

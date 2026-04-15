@@ -1,5 +1,7 @@
 window.Game = {
   path: [],
+  spawnDelayMultiplier: 1,
+  spedUp: false,
   gold: 5,
   enemies: [],
   towers: [],
@@ -11,18 +13,22 @@ window.Game = {
   autoStartLevel: false,
   assets: {
     logo: null,
-    tower1: null,
+    archerTower: null,
     castle: null,
     trash: null,
+	twoxicon: null,
   },
   ui: {
     towerButtons: [
       { type: 1, x: 1375, y: 150, w: 100, h: 100 },
+      { type: 2, x: 1375, y: 270, w: 100, h: 100 },
+	  { type: 3, x: 1375, y: 390, w: 100, h: 100 },
     ],
     trashButton: { x: 1375, y: 600, w: 100, h: 100 },
     startRoundButton: { x: 1320, y: 740, w: 170, h: 34 },
     modeToggleButton: { x: 1320, y: 782, w: 170, h: 34 },
-    settingIconButton: { x: 1495, y: 761, w: 34, h: 34 },
+    settingIconButton: { x: 1495, y: 740, w: 34, h: 34 },
+	speedUpButton: { x: 1495, y: 785, w: 34, h: 34 },
     autoStartButton: null,
     startLevelButton: null,
   },

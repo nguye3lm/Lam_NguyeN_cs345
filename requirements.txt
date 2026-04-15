@@ -9,4 +9,4 @@ Here is the requirements:
     - Create a square shape with an setting Icon. ✅
     - Add the button with Icon setting image next to Start Round and Swtich to Auto. ✅
     - Click to the Icon and pop up setting menu. ✅
-5. When I opened the setting menu, I want to see the enemy stop and tower stop shooting 
+5. When I opened the setting menu, I want to see the enemy stop and tower stop shooting ✅

@@ -8,6 +8,13 @@ class Enemy {
     this.damage = damage;
   }
 
+  speedUp(){
+	this.speed = this.speed* 5
+  }
+  slowDown(){
+	this.speed = this.speed / 5
+  }
+
   updatePos() {
     if (this.targetPos >= this.path.length) return;
 

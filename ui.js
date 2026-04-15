@@ -13,7 +13,7 @@ function renderHud() {
 function renderSidebar() {
   fill('#7c7c7c');
   rect(1300, 0, 300, 825);
-  image(Game.assets.logo, 1300, 0, 240, 100);
+  image(Game.assets.logo, 1310, 10, 220, 220);
 }
 
 function renderRoundControls() {
@@ -47,19 +47,62 @@ function renderRoundControls() {
   text(Game.autoStartLevel ? 'Switch to Manual' : 'Switch to Auto', mode.x + mode.w / 2, mode.y + mode.h / 2);
 
   textAlign(LEFT, BASELINE);
-
-  // Setting icon button (square, next to Start Round & Switch to Auto)
-  const icon = Game.ui.settingIconButton;
-  fill(255);
-  stroke(0);
-  strokeWeight(2);
-  rect(icon.x, icon.y, icon.w, icon.h, 6);
-  image(Game.assets.settingIcon, icon.x, icon.y, icon.w, icon.h);
 }
 
+
 function renderTowerButtons() {
+  const buttonInfo = {
+    1: {
+      name: 'Archer Tower',
+      cost: 3,
+      damage: 1,
+      range: 100,
+      cooldown: 30,
+      attackType: 'Single Target',
+    },
+    2: {
+      name: 'Wizard Tower',
+      cost: 5,
+      damage: 1,
+      range: 120,
+      cooldown: 55,
+      attackType: 'AoE Splash',
+      aoe: 60,
+    },
+    3: {
+      name: 'Stoic Knight',
+      cost: 5,
+      damage: 1,
+      range: 100,
+      cooldown: 55,
+      attackType: 'AoE Splash',
+      aoe: 100,
+    },
+  };
+
   for (let button of Game.ui.towerButtons) {
-    image(Game.assets.tower1, button.x, button.y, button.w, button.h);
+    image(Game.assets.archerTower, button.x, button.y, button.w, button.h);
+
+    if (button.type === 2) {
+      fill(40, 90, 180, 180);
+      noStroke();
+      rect(button.x, button.y, button.w, button.h);
+
+      fill(255);
+      textSize(18);
+      textAlign(CENTER, CENTER);
+      text('WIZ', button.x + button.w / 2, button.y + button.h / 2);
+    }
+    if (button.type === 3) {
+      fill(40, 90, 180, 180);
+      noStroke();
+      rect(button.x, button.y, button.w, button.h);
+
+      fill(255);
+      textSize(18);
+      textAlign(CENTER, CENTER);
+      text('Knight', button.x + button.w / 2, button.y + button.h / 2);
+    }
 
     if (Game.selectedBuyButton === button.type) {
       noFill();
@@ -74,19 +117,27 @@ function renderTowerButtons() {
       fill(30, 30, 30, 220);
       stroke(255, 200, 0);
       strokeWeight(2);
-      rect(button.x - 160, button.y, 150, 100, 8);
+      const info = buttonInfo[button.type];
+      const tooltipHeight = info.aoe ? 120 : 100;
+      rect(button.x - 160, button.y, 150, tooltipHeight, 8);
 
     // Tooltip text
       fill(255);
       noStroke();
       textSize(14);
       textAlign(LEFT, BASELINE);
-      text('Tower 1',         button.x - 150, button.y + 22);
-      text('Cost:   3 gold',  button.x - 150, button.y + 44);
-      text('Damage: 30',      button.x - 150, button.y + 66);
-      text('Range:  100',     button.x - 150, button.y + 88);
+      text(info.name, button.x - 150, button.y + 22);
+      text('Cost:   ' + info.cost + ' gold', button.x - 150, button.y + 44);
+      text('Damage: ' + info.damage, button.x - 150, button.y + 66);
+      text('Range:  ' + info.range, button.x - 150, button.y + 88);
+      text('Rate:   ' + info.cooldown, button.x - 150, button.y + 110);
+      if (info.aoe) {
+        text('AoE:    ' + info.aoe, button.x - 150, button.y + 132);
+      }
     }
   }
+
+  textAlign(LEFT, BASELINE);
 }
 
 function renderSelectedTowerPanel() {
@@ -100,8 +151,12 @@ function renderSelectedTowerPanel() {
   noStroke();
   textSize(18);
   text('Tower Info', 1035, 330);
+  text('Type: ' + (Game.selectedTower.towerName || 'Tower'), 1035, 345);
   text('Damage: ' + Game.selectedTower.damage, 1035, 360);
   text('Range: ' + Game.selectedTower.attackRange, 1035, 390);
+  if (Game.selectedTower.splashRadius) {
+    text('AoE: ' + Game.selectedTower.splashRadius, 1035, 420);
+  }
 
   noFill();
   stroke(255, 255, 0);
@@ -140,4 +195,23 @@ function isOnSidebar(x, y) {
 
 function syncRoundButtons() {
   // No-op: round controls are now rendered in-canvas.
+}
+
+function renderSettingIconButton() {
+  //setting button
+  const icon = Game.ui.settingIconButton;
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  rect(icon.x, icon.y, icon.w, icon.h, 6);
+  image(Game.assets.settingIcon, icon.x, icon.y, icon.w, icon.h);
+}
+function renderSpeedUpButton() {
+  //setting button
+  const icon = Game.ui.speedUpButton;
+  fill(255);
+  stroke(0);
+  strokeWeight(2);
+  rect(icon.x, icon.y, icon.w, icon.h, 6);
+  image(Game.assets.twoxicon, icon.x, icon.y, icon.w, icon.h);
 }

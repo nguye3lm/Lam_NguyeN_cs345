@@ -1,5 +1,5 @@
 class Tower {
-  constructor(x, y, attackRange = 100, cooldown = 30, damage = 1) {
+  constructor(x, y, attackRange = 100, cooldown = 30, damage = 1, towerName = null) {
     this.x = x;
     this.y = y;
     this.pos = createVector(x, y);
@@ -9,6 +9,7 @@ class Tower {
     this.maxCooldown = cooldown;
     this.damage = damage;
     this.currentCooldown = 0;
+    this.towerName = towerName;
 
     this.targetEnemy = null;
     this.projectiles = [];

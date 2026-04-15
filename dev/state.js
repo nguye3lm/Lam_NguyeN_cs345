@@ -1,5 +1,7 @@
 window.Game = {
   path: [],
+  volume: 0.5,
+  isMuted: false,
   gold: 5,
   enemies: [],
   towers: [],

@@ -69,7 +69,7 @@ function mousePressed() {
     return;
   }
 
-  // In-game: close settings menu if open
+  // In-game: close or interact with settings menu if open
   if (settingsOpen) {
     handleSettingsClick();
     return;
@@ -131,4 +131,12 @@ function mousePressed() {
   }
 
   Game.selectedTower = pickTowerAt(mouseX, mouseY);
+}
+
+function mouseDragged() {
+  handleSettingsDrag();
+}
+
+function mouseReleased() {
+  handleSettingsRelease();
 }

@@ -2,6 +2,8 @@ window.Game = {
   path: [],
   spawnDelayMultiplier: 1,
   spedUp: false,
+  volume: 0.5,
+  isMuted: false,
   gold: 5,
   enemies: [],
   towers: [],

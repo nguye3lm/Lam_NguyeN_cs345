@@ -10,3 +10,14 @@ Here is the requirements:
     - Add the button with Icon setting image next to Start Round and Swtich to Auto. ✅
     - Click to the Icon and pop up setting menu. ✅
 5. When I opened the setting menu, I want to see the enemy stop and tower stop shooting ✅
+6. As a user I want to be able to adjust volume or mute: ✅
+    - I just added 2 symbols in the assets folder: Volume amd volume muted
+    - When user click on the volume, the symbol of volume change to volume muted (image) which means off and click again to change it back with the image. 
+    - Add it in the pop up setting menu
+    - Adjust sound: create a small circle (fill black) and a line.
+    - Half left of the circle fill with blue which means percent of the music
+    - Half right of the circle fill with grey which means percent of the music
+    - As far as the user move to right, the blue fill up which means increase the volume of the sound and opposite. 
+
+After you have done all the files in this path /Users/lamnguyen/Documents/Lam_NguyeN_cs345
+Go into this path /Users/lamnguyen/Documents/p26_cs345_team08 and add the code as well

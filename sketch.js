@@ -9,7 +9,9 @@ function preload() {
   Game.assets.startbutton = loadImage('assets/CastleRush Start Placeholder.png');
   Game.assets.settingbutton = loadImage('assets/CastleRush Settings Placeholder.png');
   Game.assets.settingIcon   = loadImage('assets/Setting_Icon.png');
-  Game.assets.twoxicon   = loadImage('assets/2x.png');
+  Game.assets.twoxicon      = loadImage('assets/2x.png');
+  Game.assets.volumeIcon    = loadImage('assets/Volume.png');
+  Game.assets.muteIcon      = loadImage('assets/Muted.png');
 }
 
 function setup() {

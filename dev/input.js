@@ -27,6 +27,24 @@ function setupRoundButtons() {
 }
 
 function mousePressed() {
+  // Open settings from title screen
+  if (!gameStart) {
+    if (!settingsOpen &&
+        mouseX >= 617.5 && mouseX <= 917.5 &&
+        mouseY >= 490   && mouseY <= 615) {
+      settingsOpen = true;
+      return;
+    }
+    handleSettingsClick();
+    return;
+  }
+
+  // In-game: interact with settings if open
+  if (settingsOpen) {
+    handleSettingsClick();
+    return;
+  }
+
   if (isInsideButton(mouseX, mouseY, Game.ui.modeToggleButton)) {
     onToggleAutoStart();
     return;
@@ -81,4 +99,12 @@ function mousePressed() {
   }
 
   Game.selectedTower = pickTowerAt(mouseX, mouseY);
+}
+
+function mouseDragged() {
+  handleSettingsDrag();
+}
+
+function mouseReleased() {
+  handleSettingsRelease();
 }

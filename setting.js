@@ -1,28 +1,26 @@
 let settingsOpen = false;
-let isDraggingVolume = false;
 
-// Popup bounds
+let isDraggingSFXVolume = false;      
+let isDraggingMusicVolume = false;     
+
 const POPUP = { x: 517.5, y: 237.5, w: 500, h: 350 };
 
-// Close button: centered horizontally, near popup bottom
 const CLOSE_BTN = { x: 680, y: 520, w: 165, h: 40 };
 
-// Volume slider track
-const SLIDER = { x: 615, y: 430, w: 360 };
+// const SLIDER = { x: 615, y: 430, w: 360 };  
+const SFX_SLIDER = { x: 615, y: 390, w: 360 };    
+const MUSIC_SLIDER = { x: 615, y: 450, w: 360 };  
 
-// Mute icon button (top-left of volume row)
-const MUTE_BTN = { x: 552, y: 414, w: 40, h: 40 };
+const MUTE_BTN = { x: 552, y: 379, w: 40, h: 40 };
 
 function drawSettingsMenu() {
   if (!settingsOpen) return;
 
-  // --- Popup rect ---
   fill(255);
   stroke(0);
   strokeWeight(3);
   rect(POPUP.x, POPUP.y, POPUP.w, POPUP.h, 12);
 
-  // --- Title ---
   noStroke();
   fill(0);
   textAlign(CENTER, TOP);
@@ -30,66 +28,45 @@ function drawSettingsMenu() {
   textStyle(BOLD);
   text('Settings', 767, 257);
 
-  // ---- Volume Section ----
+  textStyle(NORMAL);
   textSize(18);
   textAlign(LEFT, BASELINE);
   fill(0);
-  text('Volume', MUTE_BTN.x, MUTE_BTN.y - 8);
 
-  // Mute icon button background
+  text('Sound Effects', SFX_SLIDER.x, SFX_SLIDER.y - 15);   
+  text('Music', MUSIC_SLIDER.x, MUSIC_SLIDER.y - 15);       
+
+  drawSlider(SFX_SLIDER, Game.isMuted ? 0 : Game.sfxVolume);     
+  drawSlider(MUSIC_SLIDER, Game.isMuted ? 0 : Game.musicVolume); 
+
+  noStroke();
+  fill(80);
+  textSize(14);
+  textAlign(CENTER, TOP);
+
+  text(Game.isMuted ? 'Muted' : int(Game.sfxVolume * 100) + '%', 767, SFX_SLIDER.y + 22);  
+  text(Game.isMuted ? 'Muted' : int(Game.musicVolume * 100) + '%', 767, MUSIC_SLIDER.y + 22); 
+
   fill(240);
   stroke(0);
   strokeWeight(1.5);
   rect(MUTE_BTN.x, MUTE_BTN.y, MUTE_BTN.w, MUTE_BTN.h, 6);
 
-  // Draw volume or mute icon
   if (Game.assets.volumeIcon && Game.assets.muteIcon) {
-    if (Game.isMuted) {
-      image(Game.assets.muteIcon, MUTE_BTN.x + 2, MUTE_BTN.y + 2, 36, 36);
-    } else {
-      image(Game.assets.volumeIcon, MUTE_BTN.x + 2, MUTE_BTN.y + 2, 36, 36);
-    }
-  } else {
-    // Fallback text if images not loaded
-    noStroke();
-    fill(0);
-    textAlign(CENTER, CENTER);
-    textSize(14);
-    text(Game.isMuted ? 'MUTE' : 'VOL', MUTE_BTN.x + MUTE_BTN.w / 2, MUTE_BTN.y + MUTE_BTN.h / 2);
+    image(
+      Game.isMuted ? Game.assets.muteIcon : Game.assets.volumeIcon,
+      MUTE_BTN.x + 2,
+      MUTE_BTN.y + 2,
+      36,
+      36
+    );
   }
 
-  // --- Slider track ---
-  const vol = Game.isMuted ? 0 : Game.volume;
-  const handleX = SLIDER.x + vol * SLIDER.w;
-  const trackY  = SLIDER.y;
-
-  // Grey right portion
-  stroke(180);
-  strokeWeight(6);
-  line(handleX, trackY, SLIDER.x + SLIDER.w, trackY);
-
-  // Blue left portion
-  stroke(30, 120, 255);
-  strokeWeight(6);
-  line(SLIDER.x, trackY, handleX, trackY);
-
-  // --- Knob: solid black circle ---
-  noStroke();
-  fill(0);
-  circle(handleX, trackY, 22);
-
-  // Volume percentage label
-  noStroke();
-  fill(80);
-  textSize(14);
-  textAlign(CENTER, TOP);
-  text(Game.isMuted ? 'Muted' : int(Game.volume * 100) + '%', 767, SLIDER.y + 22);
-
-  // --- Close Button ---
   fill(255);
   stroke(0);
   strokeWeight(2);
   rect(CLOSE_BTN.x, CLOSE_BTN.y, CLOSE_BTN.w, CLOSE_BTN.h, 8);
+
   noStroke();
   fill(0);
   textAlign(CENTER, CENTER);
@@ -97,64 +74,129 @@ function drawSettingsMenu() {
   textStyle(BOLD);
   text('Close', CLOSE_BTN.x + CLOSE_BTN.w / 2, CLOSE_BTN.y + CLOSE_BTN.h / 2);
 
-  // --- Reset p5 state ---
+  // Reset text state so nothing outside this menu is affected
   textAlign(LEFT, BASELINE);
   textStyle(NORMAL);
-  textSize(12);
-  fill(255);
-  stroke(0);
-  strokeWeight(1);
+}
+
+
+function drawSlider(slider, volume) {
+  const handleX = slider.x + volume * slider.w;
+  const trackY = slider.y;
+
+  stroke(180);
+  strokeWeight(6);
+  line(handleX, trackY, slider.x + slider.w, trackY);
+
+  stroke(30, 120, 255);
+  strokeWeight(6);
+  line(slider.x, trackY, handleX, trackY);
+
+  noStroke();
+  fill(0);
+  circle(handleX, trackY, 22);
 }
 
 function handleSettingsClick() {
   if (!settingsOpen) return;
 
-  // Close button
   if (mouseX >= CLOSE_BTN.x && mouseX <= CLOSE_BTN.x + CLOSE_BTN.w &&
       mouseY >= CLOSE_BTN.y && mouseY <= CLOSE_BTN.y + CLOSE_BTN.h) {
     settingsOpen = false;
     return;
   }
 
-  // Mute toggle
   if (mouseX >= MUTE_BTN.x && mouseX <= MUTE_BTN.x + MUTE_BTN.w &&
       mouseY >= MUTE_BTN.y && mouseY <= MUTE_BTN.y + MUTE_BTN.h) {
     Game.isMuted = !Game.isMuted;
-    applyVolume();
+    applyMusicVolume();
     return;
   }
 
-  // Start slider drag — check if clicking near the track or knob
-  const vol = Game.isMuted ? 0 : Game.volume;
-  const handleX = SLIDER.x + vol * SLIDER.w;
-  const trackY  = SLIDER.y;
-  if (mouseY >= trackY - 20 && mouseY <= trackY + 20 &&
-      mouseX >= SLIDER.x - 16 && mouseX <= SLIDER.x + SLIDER.w + 16) {
-    isDraggingVolume = true;
-    updateVolumeFromMouse();
+  if (isInsideSlider(SFX_SLIDER)) {
+    isDraggingSFXVolume = true;
+    updateSFXVolumeFromMouse();
+    return;
+  }
+
+  if (isInsideSlider(MUSIC_SLIDER)) {
+    isDraggingMusicVolume = true;
+    updateMusicVolumeFromMouse();
+    return;
   }
 }
 
 function handleSettingsDrag() {
-  if (!settingsOpen || !isDraggingVolume) return;
-  updateVolumeFromMouse();
+  if (!settingsOpen) return;
+
+  if (isDraggingSFXVolume) updateSFXVolumeFromMouse();
+  if (isDraggingMusicVolume) updateMusicVolumeFromMouse();
 }
 
 function handleSettingsRelease() {
-  isDraggingVolume = false;
+  isDraggingSFXVolume = false;   
+  isDraggingMusicVolume = false;    
 }
 
-function updateVolumeFromMouse() {
-  let ratio = (mouseX - SLIDER.x) / SLIDER.w;
+
+function isInsideSlider(slider) {
+  return mouseY >= slider.y - 20 &&
+         mouseY <= slider.y + 20 &&
+         mouseX >= slider.x - 16 &&
+         mouseX <= slider.x + slider.w + 16;
+}
+
+
+function updateSFXVolumeFromMouse() {
+  let ratio = (mouseX - SFX_SLIDER.x) / SFX_SLIDER.w;
   ratio = constrain(ratio, 0, 1);
-  Game.volume = ratio;
+
+  Game.sfxVolume = ratio;
   Game.isMuted = false;
-  applyVolume();
+} 
+
+
+function updateMusicVolumeFromMouse() {
+  let ratio = (mouseX - MUSIC_SLIDER.x) / MUSIC_SLIDER.w;
+  ratio = constrain(ratio, 0, 1);
+
+  Game.musicVolume = ratio;
+  Game.isMuted = false;
+
+  applyMusicVolume();
+} 
+
+function setSoundVolume(sound, volume) {
+  if (!sound) return;
+
+  if (typeof sound.setVolume === "function") {
+    sound.setVolume(volume);        // p5.SoundFile
+  } else {
+    sound.volume = volume;          // HTML Audio
+  }
 }
 
-function applyVolume() {
-  // p5.sound master volume
-  if (typeof masterVolume === 'function') {
-    masterVolume(Game.isMuted ? 0 : Game.volume);
+function applyMusicVolume() {
+  setSoundVolume(Game.assets.music, Game.isMuted ? 0 : Game.musicVolume);
+}
+
+function playSFX(sound) {
+  if (Game.isMuted || !sound) return;
+
+  // p5.SoundFile case
+  if (typeof sound.setVolume === "function") {
+    sound.setVolume(Game.sfxVolume);
+
+    if (typeof sound.playMode === "function") {
+      sound.playMode("restart");
+    }
+
+    sound.play();
+    return;
   }
+
+  // HTML Audio case
+  let sfx = sound;
+  sfx.volume = Game.sfxVolume;
+  sfx.play();
 }

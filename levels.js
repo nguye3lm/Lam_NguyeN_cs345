@@ -48,14 +48,16 @@ class Levels {
     if (this.spawnIndex >= this.waveEnemies.length && enemies.length === 0) {
       this.levelActive = false;
 	  this.currentLevel+=1
-	  Game.spedUp = false;
+	  if(Game.spedUp && !Game.autoStartLevel){
 		for(let enemy of Game.level.waveEnemies){
 			enemy.slowDown()
 		}
 		for(let tower of Game.towers){
 			tower.slowDown()
 		}
+		Game.spedUp = false;
 		Game.spawnDelayMultiplier = 1
+	  }
     }
   }
 
@@ -63,8 +65,11 @@ class Levels {
     let enemies = [];
     let enemyCount = max(1, this.currentLevel * 5);
     for (let i = 0; i < enemyCount; i++) {
-      enemies.push(new Enemy(4, 1, 1, this.path));
+      enemies.push(new Enemy(4, 1, 1, this.path, 10));
     }
+	if(this.currentLevel%2==0){
+		enemies.push(new Enemy(15, 1, 1, this.path,10));
+	}
 	console.log(Game.enemies)
     return enemies;
   }

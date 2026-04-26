@@ -18,6 +18,4 @@ Here is the requirements:
     - Half left of the circle fill with blue which means percent of the music
     - Half right of the circle fill with grey which means percent of the music
     - As far as the user move to right, the blue fill up which means increase the volume of the sound and opposite. 
-
-After you have done all the files in this path /Users/lamnguyen/Documents/Lam_NguyeN_cs345
-Go into this path /Users/lamnguyen/Documents/p26_cs345_team08 and add the code as well
+7. Can you move the sound/mute button and sliders up little bit. And fix the error:when I open the settings menu, everything move left. 

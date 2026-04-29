@@ -64,8 +64,8 @@ function mousePressed() {
   if (!gameStart) {
     // Open settings menu
     if (!settingsOpen &&
-        mouseX >= 617.5 && mouseX <= 917.5 &&
-        mouseY >= 490   && mouseY <= 615) {
+        mouseX >= 200 && mouseX <= 500 &&
+        mouseY >= 490 && mouseY <= 615) {
       settingsOpen = true;
       return;
     }

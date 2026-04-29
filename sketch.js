@@ -26,6 +26,7 @@ function preload() {
   Game.assets.switchAutoButtonHover = loadImage('assets/switch_auto_hover_big.png');
   Game.assets.switchManualButton = loadImage('assets/switch_manual_big.png');
   Game.assets.switchManualButtonHover = loadImage('assets/switch_manual_hover_big.png');
+  Game.assets.startMenu = loadImage('assets/Start menu2.jpg');
   Game.assets.music                   = loadSound('assets/music.mp3');
   Game.assets.enemyHit = loadSound('assets/swordsound.mp3');
 }

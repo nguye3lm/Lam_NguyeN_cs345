@@ -61,11 +61,54 @@ function mousePressed() {
     }
     Game.selectedTower = null;
   }
+  
+  //upgrade buttons
+  if (Game.selectedTower !== null && Game.selectedTower.upgradeType == null) {
+    for (let button of Game.ui.upgradeButtons) {
+      if (isInsideButton(mouseX, mouseY, button)) {
+        if (Game.selectedTower instanceof ArcherTower) {
+
+          if (button.type == 1) {
+            Game.selectedTower.damage +=1;
+            Game.selectedTower.upgradeType = 1;
+          }
+          if (button.type == 2) {
+            Game.selectedTower.attackRange += 25;
+            Game.selectedTower.upgradeType = 2;
+          }
+        }
+        if (Game.selectedTower instanceof WizardTower) {
+
+          if (button.type == 1) {
+            Game.selectedTower.damage +=1;
+            Game.selectedTower.upgradeType = 1;
+          }
+          if (button.type == 2) {
+            Game.selectedTower.attackRange += 25;
+            Game.selectedTower.upgradeType = 2;
+          }
+        }
+        if (Game.selectedTower instanceof StoicKnight) {
+
+          if (button.type == 1) {
+            Game.selectedTower.damage +=1;
+            Game.selectedTower.upgradeType = 1;
+          }
+          if (button.type == 2) {
+            Game.selectedTower.attackRange += 25;
+            Game.selectedTower.upgradeType = 2  ;
+          }
+        }
+        Game.selectedTower.upgraded = true
+      }
+    }
+  }
+
   if (!gameStart) {
     // Open settings menu
     if (!settingsOpen &&
         mouseX >= 200 && mouseX <= 500 &&
-        mouseY >= 490 && mouseY <= 615) {
+        mouseY >= 490   && mouseY <= 615) {
       settingsOpen = true;
       return;
     }

@@ -21,7 +21,7 @@ const DEFAULT_BODY_STYLE = {
 };
 
 class Tower {
-  constructor(x, y, attackRange = 100, cooldown = 30, damage = 1, towerName = null, visualConfig = {}) {
+  constructor(x, y, attackRange = 100, cooldown = 30, damage = 1, towerName = null, visualConfig = {}, upgradeType = null) {
     this.x = x;
     this.y = y;
     this.pos = createVector(x, y);
@@ -32,6 +32,7 @@ class Tower {
     this.damage = damage;
     this.currentCooldown = 0;
     this.towerName = towerName;
+    this.upgradeType = upgradeType;
 
     this.targetEnemy = null;
     this.projectiles = [];
@@ -195,8 +196,9 @@ class Tower {
       return false;
     }
 
-    // Use the current target direction and a simple frame counter for animation.
-    const frameCol = floor(frameCount / this.sprite.animationRate) % this.sprite.frameCols;
+    const isAttacking = this.targetEnemy !== null;
+    const animationFrame = floor(frameCount / this.sprite.animationRate);
+    const frameCol = isAttacking ? animationFrame % this.sprite.frameCols : 0;
     const srcX = frameCol * this.sprite.frameWidth;
     const srcY = this.facingRow * this.sprite.frameHeight;
 
@@ -227,8 +229,10 @@ class Tower {
   render() {
     // Render order: update direction, draw range, then sprite/body, then projectiles.
     this.updateFacingFromTarget();
-    this.renderRange();
-
+    
+    if (Game.selectedTower === this) {
+      this.renderRange();
+    }
     if (!this.renderSprite()) {
       this.renderDefaultBody();
     }

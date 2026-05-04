@@ -31,7 +31,16 @@ window.Game = {
     switchToManualButtonHover: null,
     switchToAutoButton: null,
     switchToAutoButtonHover: null,
-	enemyHit: null,
+    settingsButton: null,
+    settingsButtonHover: null,
+    speedUpButton: null,
+    speedUpButtonHover: null,
+    speedUpButtonInactive: null,
+    speedDownButton: null,
+    speedDownButtonHover: null,
+	  enemyHit: null,
+    healthbarOuter: null,
+    healthbarInner: null,
   },
   ui: {
     towerButtons: [
@@ -39,13 +48,20 @@ window.Game = {
       { type: 2, x: 1375, y: 270, w: 100, h: 100 },
       { type: 3, x: 1375, y: 390, w: 100, h: 100 },
     ],
+    upgradeButtons: [
+      { type: 1, x: 1035, y: 615, w: 50, h: 50},
+      { type: 2, x: 1035, y: 680, w: 50, h: 50},
+    ],
     trashButton: { x: 1375, y: 600, w: 100, h: 100 },
     startRoundButton: { x: 1320, y: 740, w: 170, h: 38 }, // 170, 34 (original values, changed for image buttons)
     modeToggleButton: { x: 1320, y: 782, w: 170, h: 38 }, // 170, 34 (original values, changed for image buttons)
-    settingIconButton: { x: 1495, y: 740, w: 34, h: 34 },
-    speedUpButton:     { x: 1495, y: 785, w: 34, h: 34 },
+    settingIconButton: { x: 1495, y: 740, w: 38, h: 38 },
+    speedUpButton:     { x: 1495, y: 782  , w: 38, h: 38 },
     autoStartButton: null,
     startLevelButton: null,
   },
   level: null,
 };
+function changeLevel(){
+	Game.level.currentLevel = 20;
+}

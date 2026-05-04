@@ -1,13 +1,59 @@
 function renderHud() {
-  fill('#efbf04');
+  // ── Shaded panel (top-left, HORIZONTAL layout) ───────────────────────────
+  const panelX   = 8;
+  const panelY   = 8;
+  const iconSize = 26;
+  const padding  = 10;
+  const gap      = 8;
+  const colW     = 80;
+  const panelW   = padding + 4 * colW + padding;
+  const panelH   = iconSize + 20;
+  const UNUSED   = 0; // placeholder to avoid unused-var lint
+
+  // dark semi-transparent background with rounded bottom corners
+  noStroke();
+  fill(20, 15, 10, 195);
+  rect(panelX, panelY, panelW, panelH, 0, 0, 10, 10);
+
+  // subtle inner border
+  noFill();
+  stroke(180, 130, 40, 130);
+  strokeWeight(1.5);
+  rect(panelX + 1, panelY + 1, panelW - 2, panelH - 2, 0, 0, 9, 9);
+
+  // ── Icons + values: enemies → towers → gold → castleHP (LEFT to RIGHT) ──
+  const items = [
+    { icon: Game.assets.swordIcon,  value: Game.enemies.length },
+    { icon: Game.assets.shieldIcon, value: Game.towers.length  },
+    { icon: Game.assets.coinIcon,   value: Game.gold           },
+    { icon: Game.assets.heartIcon,  value: Game.castleHealth   },
+  ];
+
+  const iy = panelY + 10;
+
+  for (let i = 0; i < items.length; i++) {
+    const ix = panelX + padding + i * colW;
+    image(items[i].icon, ix, iy, iconSize, iconSize);
+    fill('#efbf04');
+    stroke(0);
+    strokeWeight(2.5);
+    textSize(18);
+    textAlign(LEFT, TOP);
+    text(items[i].value, ix + iconSize + gap, iy + 4);
+  }
+
+  // ── Level indicator  (middle bottom of canvas) ───────────────────────
+  const lvl = Game.level ? Game.level.currentLevel : 1;
+  textAlign(CENTER, BOTTOM);
   textSize(22);
+  fill('#efbf04');
   stroke(0);
   strokeWeight(3);
-  text('Gold: ' + Game.gold, 1100, 30);
-  text('Level: ' + Game.level.currentLevel, 1100, 150);
-  text('Enemies: ' + Game.enemies.length, 1100, 60);
-  text('Towers: ' + Game.towers.length, 1100, 90);
-  text('Castle HP: ' + Game.castleHealth, 1100, 120);
+  text('Level ' + lvl + ' / 20', width / 2, height - 8);
+
+  // reset alignment
+  textAlign(LEFT, BASELINE);
+  noStroke();
 }
 
 function renderSidebar() {

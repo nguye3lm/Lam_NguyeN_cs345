@@ -26,6 +26,10 @@ function preload() {
   Game.assets.wizardhit     = loadSound('assets/explosion.mp3');
   Game.assets.archerhit     = loadSound('assets/archer.mp3');
   Game.assets.background = loadImage('assets/test.png');
+  Game.assets.coinIcon   = loadImage('assets/coin.png');
+  Game.assets.swordIcon  = loadImage('assets/swordIcon.png');
+  Game.assets.shieldIcon = loadImage('assets/sheildIcon.png');
+  Game.assets.heartIcon  = loadImage('assets/heartIcon.png');
   Game.assets.wall      = loadImage('assets/UIWall.png');
   Game.assets.startRoundButton = loadImage('assets/start_round_big.png');
   Game.assets.startRoundButtonHover = loadImage('assets/start_round_hover_big.png');

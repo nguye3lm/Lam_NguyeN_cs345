@@ -1,5 +1,5 @@
 class WizardTower extends Tower {
-  constructor(x, y, attackRange = 120, cooldown = 55, damage = 1, splashRadius = 60) {
+  constructor(x, y, attackRange = 120, cooldown = 55, damage = 1, splashRadius = 60, upgradeType=null) {
     super(x, y, attackRange, cooldown, damage, 'Wizard Tower', {
       rangeStyle: {
         fill: [120, 180, 255, 40],
@@ -27,12 +27,14 @@ class WizardTower extends Tower {
     });
     this.splashRadius = splashRadius;
 	this.spedUp = Game.spedUp;
+	this.upgradeType = upgradeType;
 	console.log(this.spedUp)
   }
 
   attack(enemy) {
+	console.log(this.upgradeType)
 	let speed = this.spedUp ? 10 : 5;
-    this.projectiles.push(new SplashOrbProjectile(this.x, this.y, enemy, this.damage, speed, this.splashRadius));
+    this.projectiles.push(new SplashOrbProjectile('Wizard Tower', this.x, this.y, enemy, this.damage, this.upgradeType, speed, this.splashRadius));
   }
     speedUp() {
     this.maxCooldown /= 6;

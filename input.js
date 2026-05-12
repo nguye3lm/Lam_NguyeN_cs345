@@ -3,9 +3,9 @@ function isInsideButton(x, y, button) {
 }
 
 const towerConfigs = {
-  1: { cost: 3, range: 100, cooldown: 30, damage: 1 },
-  2: { cost: 5, range: 120, cooldown: 55, damage: 1, splashRadius: 60 },
-  3: { cost: 5, range: 50, cooldown: 70, damage: 2, splashRadius: 50 },
+  1: { cost: 15, range: 130, cooldown: 30, damage: 1 },
+  2: { cost: 35, range: 100, cooldown: 55, damage: 2, splashRadius: 60 },
+  3: { cost: 20, range: 50, cooldown: 70, damage: 1.5, splashRadius: 50 },
 };
 
 function onToggleAutoStart() {
@@ -55,13 +55,23 @@ function mousePressed() {
   if (isInsideButton(mouseX, mouseY, Game.ui.trashButton) && Game.selectedTower !== null){
     let index = Game.towers.indexOf(Game.selectedTower);
     if (index !== -1) {
-      Game.gold += 3;
+      Game.gold += 10;
       Game.towers.splice(index, 1);
-      
+	  gameStats.towersSold+=1;
+
     }
     Game.selectedTower = null;
   }
-  
+
+  if (Game.selectedTower !== null) {
+    for (let button of Game.ui.targetPriorityButtons) {
+      if (isInsideButton(mouseX, mouseY, button)) {
+        Game.selectedTower.setTargetPriority(button.mode);
+        return;
+      }
+    }
+  }
+
   //upgrade buttons
   if (Game.selectedTower !== null && Game.selectedTower.upgradeType == null) {
     for (let button of Game.ui.upgradeButtons) {
@@ -69,46 +79,68 @@ function mousePressed() {
         if (Game.selectedTower instanceof ArcherTower) {
 
           if (button.type == 1) {
-            Game.selectedTower.damage +=1;
-            Game.selectedTower.upgradeType = 1;
+			if(Game.gold >= 20){
+                Game.selectedTower.attackRange *=2;
+                Game.selectedTower.upgradeType = 1;
+				Game.gold -= 20;
+			}
+
           }
           if (button.type == 2) {
-            Game.selectedTower.attackRange += 25;
-            Game.selectedTower.upgradeType = 2;
+             //Piercing = hit extra enemy
+			if(Game.gold >= 10){
+				Game.selectedTower.upgradeType = 2;
+				Game.gold -= 10;
+			}
           }
         }
         if (Game.selectedTower instanceof WizardTower) {
 
           if (button.type == 1) {
-            Game.selectedTower.damage +=1;
-            Game.selectedTower.upgradeType = 1;
+				if(Game.gold >= 25){
+            		Game.selectedTower.damage += Game.selectedTower.damage/2; //Burn = damage over time
+            		Game.selectedTower.upgradeType = 1;
+			   		Game.gold -= 25;
+				}
           }
           if (button.type == 2) {
-            Game.selectedTower.attackRange += 25;
-            Game.selectedTower.upgradeType = 2;
+			if(Game.gold >= 30){
+				//Slow = reduce enemy speed temporarily
+               Game.selectedTower.upgradeType = 2;
+			   Game.gold -= 30;
+			}
+
           }
+
         }
         if (Game.selectedTower instanceof StoicKnight) {
 
           if (button.type == 1) {
-            Game.selectedTower.damage +=1;
-            Game.selectedTower.upgradeType = 1;
+			if(Game.gold >= 50){
+				Game.selectedTower.upgradeType = 1;
+				Game.gold -= 50;
+			}
           }
           if (button.type == 2) {
-            Game.selectedTower.attackRange += 25;
-            Game.selectedTower.upgradeType = 2  ;
+			if(Game.gold >= 20){
+            	Game.selectedTower.maxCooldown /= 2; //Stun Strike = chance to freeze enemy briefly
+            	Game.selectedTower.upgradeType = 2  ;
+				Game.gold -= 20;
+			}
           }
         }
         Game.selectedTower.upgraded = true
+		gameStats.numOfUpgrades+=1;
       }
     }
   }
 
   if (!gameStart) {
     // Open settings menu
+    const setting = Game.ui.menuSettingsButton;
     if (!settingsOpen &&
-        mouseX >= 200 && mouseX <= 500 &&
-        mouseY >= 490   && mouseY <= 615) {
+        mouseX >= setting.x && mouseX <= setting.x + setting.w &&
+        mouseY >= setting.y   && mouseY <= setting.y + setting.h) {
       settingsOpen = true;
       return;
     }
@@ -165,17 +197,22 @@ function mousePressed() {
 
       if (Game.draggingTowerType === 1) {
           placed = placeTower(mouseX, mouseY, ArcherTower, config.range, config.cooldown, config.damage);
+		  gameStats.archersPlaced +=1;
       }
 
       if (Game.draggingTowerType === 2) {
         placed = placeWizardTower(mouseX, mouseY, config.range, config.cooldown, config.damage, config.splashRadius);
+		gameStats.wizardsPlaced +=1;
       }
 	  if (Game.draggingTowerType === 3) {
         placed = placeStoicKnight(mouseX, mouseY, config.range, config.cooldown, config.damage, config.splashRadius);
+		gameStats.stoicKnightsPlaced+=1;
       }
 
       if (placed) {
         addGold(-config.cost);
+		gameStats.goldSpent +=config.cost;
+		gameStats.towersPlaced+=1;
       }
     }
 

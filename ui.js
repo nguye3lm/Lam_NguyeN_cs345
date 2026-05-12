@@ -1,16 +1,16 @@
 function renderHud() {
-  // ── Shaded panel (top-left, HORIZONTAL layout) ───────────────────────────
+  // ── Shaded panel 
   const panelX   = 8;
   const panelY   = 8;
   const iconSize = 26;
   const padding  = 10;
   const gap      = 8;
   const colW     = 80;
-  const panelW   = padding + 4 * colW + padding;
+  const panelW   = padding + 5.5 * colW + padding;
   const panelH   = iconSize + 20;
   const UNUSED   = 0; // placeholder to avoid unused-var lint
 
-  // dark semi-transparent background with rounded bottom corners
+  // transparent background for the icon
   noStroke();
   fill(20, 15, 10, 195);
   rect(panelX, panelY, panelW, panelH, 0, 0, 10, 10);
@@ -41,8 +41,9 @@ function renderHud() {
     textAlign(LEFT, TOP);
     text(items[i].value, ix + iconSize + gap, iy + 4);
   }
+    text("code: ", 340, 22);
 
-  // ── Level indicator  (middle bottom of canvas) ───────────────────────
+  // Level
   const lvl = Game.level ? Game.level.currentLevel : 1;
   textAlign(CENTER, BOTTOM);
   textSize(22);
@@ -55,6 +56,7 @@ function renderHud() {
   textAlign(LEFT, BASELINE);
   noStroke();
 }
+
 
 function renderSidebar() {
   fill('#7c7c7c');
@@ -99,29 +101,29 @@ function renderTowerButtons() {
   const buttonInfo = {
     1: {
       name: 'Archer Tower',
-      cost: 3,
+      cost: 15,
       damage: 1,
-      range: 100,
+      range: 130,
       cooldown: 30,
       attackType: 'Single Target',
     },
     2: {
       name: 'Wizard Tower',
-      cost: 5,
-      damage: 1,
-      range: 120,
+      cost: 35,
+      damage: 2,
+      range: 100,
       cooldown: 55,
       attackType: 'AoE Splash',
       aoe: 60,
     },
     3: {
       name: 'Stoic Knight',
-      cost: 5,
-      damage: 1,
-      range: 100,
-      cooldown: 55,
+      cost: 20,
+      damage: 1.5,
+      range: 50,
+      cooldown: 70,
       attackType: 'AoE Splash',
-      aoe: 100,
+      aoe: 70,
     },
   };
 
@@ -216,28 +218,68 @@ function renderSelectedTowerPanel() {
     text('AoE: ' + Game.selectedTower.splashRadius, 1035, 600);
   }
 
+  for (let button of Game.ui.targetPriorityButtons) {
+    const isSelected = Game.selectedTower.targetPriority === button.mode;
+    fill(isSelected ? color(245, 205, 70) : color(215));
+    stroke(40);
+    strokeWeight(isSelected ? 2 : 1);
+    rect(button.x, button.y, button.w, button.h, 5);
+
+    fill(0);
+    noStroke();
+    textSize(12);
+    textAlign(CENTER, CENTER);
+    text(button.label, button.x + button.w / 2, button.y + button.h / 2);
+  }
+  textAlign(LEFT, BASELINE);
+
   noFill();
   stroke(255, 255, 0);
   strokeWeight(2);
   circle(Game.selectedTower.x, Game.selectedTower.y, 24);
     fill(255);
   noStroke();
-  rect(Game.ui.trashButton.x, Game.ui.trashButton.y, Game.ui.trashButton.w, Game.ui.trashButton.h); //trash
-  image(Game.assets.trash, 1386, 600, 79, 100);
+  image(Game.assets.trash, Game.ui.trashButton.x, Game.ui.trashButton.y, 79, 100);
 
   //upgrade button
   for (let button of Game.ui.upgradeButtons) {
     if (button.type == 1) {
-      fill(255, 0, 0);
-      rect(button.x, button.y, button.w, button.h);
-      fill(0);
-      text("Damage + 1", 1100, 645);
+		fill(0);
+		if(Game.selectedTower.towerName == 'Wizard Tower'){
+			image(Game.assets.staff, button.x,button.y, button.w, button.h)
+			text("50% Damage increase, 25 Gold", 1100, 645);
+		}
+		else if(Game.selectedTower.towerName == 'Archer Tower'){
+			image(Game.assets.range, button.x,button.y, button.w, button.h)
+			text("100% range increase, 20 Gold", 1100, 645);
+		}
+		else if(Game.selectedTower.towerName == 'Stoic Knight'){
+			image(Game.assets.sword, button.x,button.y, button.w, button.h)
+			text("hit enemies backwards, 50 gold", 1100, 645);
+		}
+		else{
+		text("Damage + 1", 1100, 645);
+		rect(button.x,button.y, button.w, button.h);
+	  }
     }
     if (button.type == 2) {
-      fill(0, 0, 255);
-      rect(button.x, button.y, button.w, button.h);
-      fill(0);
-      text("Range + 25", 1100, 710);
+		fill(0);
+	  if(Game.selectedTower.towerName == 'Wizard Tower'){
+		image(Game.assets.snowflake, button.x,button.y, button.w, button.h)
+		text("Slow enemies: 1sec, 30 Gold", 1100, 710);
+	  }
+	  else if(Game.selectedTower.towerName == 'Archer Tower'){
+		image(Game.assets.arrow, button.x,button.y, button.w, button.h)
+		text("targets two enemies, 10 Gold", 1100, 710);
+	  }
+		else if(Game.selectedTower.towerName == 'Stoic Knight'){
+			image(Game.assets.speed, button.x,button.y, button.w, button.h)
+			text("hit speed increase, 20 gold", 1100, 710);
+		}
+	  else{
+		text("Range + 25", 1100, 710);
+		rect(button.x,button.y, button.w, button.h);
+	  }
     }
   }
 }

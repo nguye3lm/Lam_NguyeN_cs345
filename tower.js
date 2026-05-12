@@ -20,6 +20,8 @@ const DEFAULT_BODY_STYLE = {
   innerSize: 8,
 };
 
+const VALID_TARGET_PRIORITIES = ['first', 'last', 'strong'];
+
 class Tower {
   constructor(x, y, attackRange = 100, cooldown = 30, damage = 1, towerName = null, visualConfig = {}, upgradeType = null) {
     this.x = x;
@@ -35,6 +37,7 @@ class Tower {
     this.upgradeType = upgradeType;
 
     this.targetEnemy = null;
+    this.targetPriority = 'first';
     this.projectiles = [];
     this.spedUp = false;
 
@@ -102,15 +105,86 @@ class Tower {
     this.maxCooldown *= 4;
   }
 
+  setTargetPriority(priority) {
+    if (VALID_TARGET_PRIORITIES.includes(priority)) {
+      this.targetPriority = priority;
+    }
+  }
+
+  getEnemyPathProgress(enemy) {
+    if (!enemy || !enemy.path || enemy.path.length === 0) {
+      return 0;
+    }
+
+    if (enemy.targetPos >= enemy.path.length) {
+      return enemy.path.length;
+    }
+
+    const previousIndex = Math.max(0, enemy.targetPos - 1);
+    const previousNode = enemy.path[previousIndex];
+    const nextNode = enemy.path[enemy.targetPos];
+
+    if (!previousNode || !nextNode) {
+      return enemy.targetPos;
+    }
+
+    const segmentLength = dist(previousNode.x, previousNode.y, nextNode.x, nextNode.y);
+    if (segmentLength <= 0) {
+      return enemy.targetPos;
+    }
+
+    const distanceToNext = dist(enemy.pos.x, enemy.pos.y, nextNode.x, nextNode.y);
+    const segmentProgress = constrain(1 - (distanceToNext / segmentLength), 0, 1);
+    return previousIndex + segmentProgress;
+  }
+
   findTarget(enemies) {
     this.targetEnemy = null;
     if (!enemies || enemies.length === 0) return;
 
+    const inRangeEnemies = [];
     for (let enemy of enemies) {
+      if (enemy.health <= 0) continue;
       let distToEnemyPos = dist(this.x, this.y, enemy.pos.x, enemy.pos.y);
       if (distToEnemyPos <= this.attackRange) {
-        this.targetEnemy = enemy;
-        return;
+        inRangeEnemies.push(enemy);
+      }
+    }
+
+    if (inRangeEnemies.length === 0) {
+      return;
+    }
+
+    this.targetEnemy = inRangeEnemies[0];
+
+    for (let i = 1; i < inRangeEnemies.length; i++) {
+      const candidate = inRangeEnemies[i];
+      const best = this.targetEnemy;
+
+      if (this.targetPriority === 'last') {
+        const candidateProgress = this.getEnemyPathProgress(candidate);
+        const bestProgress = this.getEnemyPathProgress(best);
+
+        if (candidateProgress < bestProgress || (candidateProgress === bestProgress && candidate.health > best.health)) {
+          this.targetEnemy = candidate;
+        }
+      } else if (this.targetPriority === 'strong') {
+        if (candidate.health > best.health) {
+          this.targetEnemy = candidate;
+        } else if (candidate.health === best.health) {
+          const candidateProgress = this.getEnemyPathProgress(candidate);
+          const bestProgress = this.getEnemyPathProgress(best);
+          if (candidateProgress > bestProgress) {
+            this.targetEnemy = candidate;
+          }
+        }
+      } else {
+        const candidateProgress = this.getEnemyPathProgress(candidate);
+        const bestProgress = this.getEnemyPathProgress(best);
+
+        if (candidateProgress > bestProgress || (candidateProgress === bestProgress && candidate.health > best.health)) {
+          this.targetEnemy = candidate;
+        }
       }
     }
   }

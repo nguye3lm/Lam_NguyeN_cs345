@@ -26,10 +26,6 @@ function preload() {
   Game.assets.wizardhit     = loadSound('assets/explosion.mp3');
   Game.assets.archerhit     = loadSound('assets/archer.mp3');
   Game.assets.background = loadImage('assets/test.png');
-  Game.assets.coinIcon   = loadImage('assets/coin.png');
-  Game.assets.swordIcon  = loadImage('assets/swordIcon.png');
-  Game.assets.shieldIcon = loadImage('assets/sheildIcon.png');
-  Game.assets.heartIcon  = loadImage('assets/heartIcon.png');
   Game.assets.wall      = loadImage('assets/UIWall.png');
   Game.assets.startRoundButton = loadImage('assets/start_round_big.png');
   Game.assets.startRoundButtonHover = loadImage('assets/start_round_hover_big.png');
@@ -45,17 +41,41 @@ function preload() {
   Game.assets.speedUpButtonInactive = loadImage('assets/speed_up_button_inactive.png');
   Game.assets.speedDownButton = loadImage('assets/speed_down_button.png');
   Game.assets.speedDownButtonHover = loadImage('assets/speed_down_button_hover.png');
+  Game.assets.startButton = loadImage('assets/start_main_menu.png');
+  Game.assets.startButtonHover = loadImage('assets/start_main_menu_hover.png');
+  Game.assets.menuSettingsButton = loadImage('assets/settings_main_menu.png');
+  Game.assets.menuSettingsButtonHover = loadImage('assets/settings_main_menu_hover.png');
   Game.assets.music                   = loadSound('assets/music.mp3');
   Game.assets.enemyHit = loadSound('assets/swordsound.mp3');
   Game.assets.startMenu = loadImage('assets/Start menu2.jpg');
   Game.assets.healthbarOuter = loadImage('assets/healthbar_outer.png');
   Game.assets.healthbarInner = loadImage('assets/healthbar_inner.png');
+   Game.assets.coinIcon   = loadImage('assets/coin.png');
+  Game.assets.swordIcon  = loadImage('assets/swordIcon.png');
+  Game.assets.shieldIcon = loadImage('assets/sheildIcon.png');
+  Game.assets.heartIcon  = loadImage('assets/heartIcon.png');
+  Game.assets.wall      = loadImage('assets/UIWall.png');
+  Game.assets.finalBoss = loadImage('assets/goblinOverlord_big.png');
+  Game.assets.snowflake = loadImage('assets/snowflake.jpg');
+  Game.assets.staff = loadImage('assets/staff.webp');
+  Game.assets.arrow = loadImage('assets/arrow.avif');
+  Game.assets.range = loadImage('assets/range.avif');
+  Game.assets.sword = loadImage('assets/swordIcon_big.png');
+  Game.assets.speed = loadImage('assets/speed.jpg');
 }
 
 function setup() {
   createCanvas(1535, 825);
   userStartAudio();  // unlock audio for browser autoplay policy
   applyMusicVolume();     // apply Game.volume (0.5) immediately at startup
+  Game.input = createInput("");
+  Game.input.position(390, 20)
+  Game.input.size(60)
+  Game.input.hide()
+  Game.input.input(()=>{
+  checkInput(Game.input.value());
+  })
+
 }
 
 function draw() {
@@ -73,22 +93,25 @@ function draw() {
   if (gameStart == false) {
     menuDraw();
     startButton();
-    settingButton();
+    renderStartButton();
+    renderSettingButton();
     drawSettingsMenu();
     return;
   }
 
   if (gameStart == true) {
-
+	Game.input.show();
     if (!gameInitialized) {
-      Game.assets.music.play();
+	  if(!Game.reset){
+		Game.assets.music.play();
+	  }
       createPath(Game.path);
       Game.level = new Levels(Game.path);
       setupRoundButtons();
       gameInitialized = true;
     }
 
-
+    renderSidebar();
     syncRoundButtons();
     renderPath(Game.path);
     updateRoundState();
@@ -98,7 +121,6 @@ function draw() {
     updateAndRenderTowers();
 
     renderHud();
-    renderSidebar();
     renderRoundControls();
     renderTowerButtons();
 
@@ -110,6 +132,7 @@ function draw() {
 
     if (Game.castleHealth <= 0) {
       gameLost = true;
+	  Game.startGold+=5;
 	  if(Game.spedUp){
 		for(let enemy of Game.level.waveEnemies){
 			enemy.slowDown()
@@ -124,6 +147,19 @@ function draw() {
 
     if (!Game.level.levelActive && Game.level.currentLevel > 20 && Game.enemies.length === 0) {
       gameWon = true;
+	  Game.startGold-=5;
     }
   }
+}
+
+function checkInput(value){
+	if(value == 'gold'){
+		Game.gold = 9999;
+	}
+	else if(value == 'level'){
+		Game.level.currentLevel = 20;
+	}
+	else if(value == 'health'){
+		Game.castleHealth = 9999
+	}
 }

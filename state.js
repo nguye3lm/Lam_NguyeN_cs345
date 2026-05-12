@@ -6,7 +6,8 @@ window.Game = {
   sfxVolume: 0.5,
   musicVolume: 0.5,
   isMuted: false,
-  gold: 5,
+  gold: 35,
+  startGold: 35,
   enemies: [],
   towers: [],
   castleHealth:20,
@@ -41,6 +42,11 @@ window.Game = {
 	  enemyHit: null,
     healthbarOuter: null,
     healthbarInner: null,
+    startButton: null,
+    startButtonHover: null,
+    menuSettingsButton: null,
+    menuSettingsButtonHover: null,
+	input: null,
   },
   ui: {
     towerButtons: [
@@ -52,16 +58,21 @@ window.Game = {
       { type: 1, x: 1035, y: 615, w: 50, h: 50},
       { type: 2, x: 1035, y: 680, w: 50, h: 50},
     ],
+    targetPriorityButtons: [
+      { mode: 'first', label: 'FIRST', x: 1035, y: 760, w: 78, h: 26 },
+      { mode: 'last', label: 'LAST', x: 1120, y: 760, w: 78, h: 26 },
+      { mode: 'strong', label: 'STRONG', x: 1205, y: 760, w: 78, h: 26 },
+    ],
     trashButton: { x: 1375, y: 600, w: 100, h: 100 },
     startRoundButton: { x: 1320, y: 740, w: 170, h: 38 }, // 170, 34 (original values, changed for image buttons)
     modeToggleButton: { x: 1320, y: 782, w: 170, h: 38 }, // 170, 34 (original values, changed for image buttons)
     settingIconButton: { x: 1495, y: 740, w: 38, h: 38 },
     speedUpButton:     { x: 1495, y: 782  , w: 38, h: 38 },
+    menuStartButton:     { x: 200, y: 350  , w: 300, h: 83 },
+    menuSettingsButton:     { x: 200, y: 450  , w: 300, h: 83 },
     autoStartButton: null,
     startLevelButton: null,
   },
   level: null,
+  reset: false,
 };
-function changeLevel(){
-	Game.level.currentLevel = 20;
-}

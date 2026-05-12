@@ -26,4 +26,22 @@ class ArcherTower extends Tower {
       },
     });
   }
+  
+  attack(enemy) {
+    let speed = this.spedUp ? 10 : 5;
+    if (this.upgradeType === 2) { 
+      this.projectiles.push(new PiercingProjectile(this.x, this.y, enemy, this.damage, speed))
+    } else {
+      this.projectiles.push(new OrbProjectile(this.x, this.y, enemy, this.damage, speed))
+    }
+  }
+  speedUp() {
+    this.maxCooldown /= 6;
+    this.spedUp = true;
+  }
+
+  slowDown() {
+    this.spedUp = false;
+    this.maxCooldown *= 6;
+  }
 }

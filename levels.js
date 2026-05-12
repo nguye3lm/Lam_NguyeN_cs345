@@ -15,12 +15,12 @@ class Levels {
 		[15,0,0], [10,3,0],
 		[10,8,0], [15,10,0],
 		[15,10,5], [5,15,10],
-		[0,20,15], [10,10,10],
-		[30,0,0], [0,30,0],
-		[0,0,30], [40,0,5],
-		[30,10,0], [30,10,5],
-		[30,10,10], [30,15,15],
-		[30,30,30], [0,0,0],
+		[0,20,15], [30,30,20],
+		[30,30,30], [30,30,30],
+		[30,30,30], [30,30,30],
+		[30,30,30], [30,30,30],
+		[30,30,30], [30,30,30],
+		[30,30,30], [30,30,30],
 	]
   }
 
@@ -33,7 +33,7 @@ class Levels {
 
     this.spawnIndex = 0;
     this.lastSpawnTime = millis();
-    this.spawnDelay = random(100/Game.spawnDelayMultiplier, 1500/Game.spawnDelayMultiplier);
+    this.spawnDelay = random(0, 1/Game.spawnDelayMultiplier);
     this.levelActive = true;
   }
 
@@ -55,7 +55,13 @@ class Levels {
       this.spawnIndex++;
 
       this.lastSpawnTime = millis();
-      this.spawnDelay = random(100/Game.spawnDelayMultiplier, 1500/Game.spawnDelayMultiplier);
+	  if(Game.level.currentLevel >= 10){
+		this.spawnDelay = random(1/Game.spawnDelayMultiplier, 400/Game.spawnDelayMultiplier);
+	  }
+	  else{
+		this.spawnDelay = random(100/Game.spawnDelayMultiplier, 1500/Game.spawnDelayMultiplier);
+	  }
+      
     }
 
     // check if wave finished
@@ -79,11 +85,14 @@ class Levels {
     let enemies = [];
 	let levelIndex = this.currentLevel-1;
 	let healthBonus = 0;
+	if(this.currentLevel >= 15){
+		healthBonus+=20;
+	}
 	if(this.currentLevel >= 10){
-		healthBonus = 5;
+		healthBonus +=10;
 	}
 	if(this.currentLevel == 20){
-		enemies.push(new Enemy(200, 5, 1, this.path, 10, 'boss'))
+		enemies.push(new Enemy(1000, 5, 1, this.path, 10, 'boss'))
 		return enemies;
 	}
 	for(let index = 0; index < this.numOfEnemiesPerRound[levelIndex].length;index++){
@@ -98,13 +107,13 @@ class Levels {
 		//add fast units to enemy array
 		else if(index === 1){
 			for(let x = 0;x<num;x++){
-				enemies.push(new Enemy(3+healthBonus, 1, 3, this.path, 10, 'berserker'))
+				enemies.push(new Enemy(6+healthBonus, 1, 2, this.path, 10, 'berserker'))
 			}
 		}
 		//add slow tank units to enemy array
 		else if(index === 2){
 			for(let x = 0;x<num;x++){
-				enemies.push(new Enemy(8+healthBonus, 2, 0.5, this.path, 10, 'brute'))
+				enemies.push(new Enemy(15+healthBonus, 2, 0.5, this.path, 10, 'brute'))
 			}
 		}
   }

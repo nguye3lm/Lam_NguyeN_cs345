@@ -1,21 +1,41 @@
 function menuDraw() {
-    image(Game.assets.startMenu, 0, 0, width, height);
-    image(Game.assets.logo, 150, 120, 400, 300);
+  image(Game.assets.startMenu, 0, 0, width, height);
+  image(Game.assets.logo, 150, 120, 400, 300);
 }
 
 function startButton() {
-    image(Game.assets.startbutton, 200, 350, 300, 125);
+  const start = Game.ui.menuStartButton;
 
-  if (mouseX >= 200 && mouseX <= 500 &&
-      mouseY >= 350 && mouseY <= 475) {
+  if (mouseX >= start.x && mouseX <= start.x + start.w &&
+    mouseY >= start.y && mouseY <= start.y + start.h) {
 
     if (mouseIsPressed && !settingsOpen) {
       gameStart = true;
     }
+  }
+}
 
+function renderStartButton() {
+  const start = Game.ui.menuStartButton;
+
+  if (isInsideButton(mouseX, mouseY, start)) {
+    image(Game.assets.startButtonHover, start.x, start.y, start.w, start.h);
+  } else {
+    image(Game.assets.startButton, start.x, start.y, start.w, start.h);
   }
 }
 
 function settingButton() {
-  image(Game.assets.settingbutton, 200, 490, 300, 125);
+  const s = Game.ui.menuSettingsButton;
+  image(Game.assets.menuSettingsButton, s.x, s.y, s.w, s.h);
+}
+
+function renderSettingButton() {
+  const s = Game.ui.menuSettingsButton;
+
+  if (isInsideButton(mouseX, mouseY, s)) {
+    image(Game.assets.menuSettingsButtonHover, s.x, s.y, s.w, s.h);
+  } else {
+    image(Game.assets.menuSettingsButton, s.x, s.y, s.w, s.h);
+  }
 }

@@ -10,6 +10,8 @@ function updateAndRenderEnemies() {
     if (enemy.health <= 0) {
       if (enemy.health <= 0) {
         addGold(1);
+		gameStats.goldCollected+=1;
+		gameStats.enemiesKilled+=1;
       }
       Game.enemies.splice(i, 1);
       continue;

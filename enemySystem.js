@@ -16,7 +16,7 @@ function updateAndRenderEnemies() {
       Game.enemies.splice(i, 1);
       continue;
     }
-	if(enemy.targetPos >= Game.path.length){
+	if(enemy.targetPos >= Game.path.length && !settingsOpen){
 		enemy.coolDown-=1;
 		if(enemy.coolDown <= 0){
 			Game.assets.enemyHit.setVolume(0.7);

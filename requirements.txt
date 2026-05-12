@@ -1,16 +1,9 @@
 Go to this path: /Users/lamnguyen/Documents/Lam_NguyeN_cs345
 Read all the files to understand the environment
 Here is the requirements:
-1. I want to add the icon for each title (gold, enemies, towers, castle health) in the assets folder.
-2. replace all the words to the icon: 
-    gold -> coin.png
-    enemies -> swordIcon.png
-    towers -> shieldIcon.png
-    castleHP -> heartIcon.png
-3. Create a reactangle with shade on the top left side.
-4. Put all the title follow this order on the top left side on the shade reactangle like kingdom rush:
-  enemies -> towers -> gold -> castleHP from left to right the canvas.
-5. Put the levels in the middle bottom of the canvas and do level ?/20. 
-
+1. Read all the the files for setting and setting menu pop up.
+2. Find the bug that enemies can be able to attack even the menu pop up.
+3. The Castle HP going down when enemies approach, not moving but can still attack the Castle.
+4. Tell me where is the bug but do not fix until I say so.
 
 Check off all the requirements after you done. 
